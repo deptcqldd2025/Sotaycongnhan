@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sổ tay CNQL - Bản đồ</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+    <style>
+        /* Tùy chỉnh riêng cho trang Bản đồ */
+        body, html { height: 100%; overflow: hidden; }
+        
+        /* Bản đồ chiếm toàn bộ phần còn lại sau Header */
+        #map {
+            width: 100%;
+            height: calc(100vh - 60px); /* Trừ đi chiều cao Header */
+            z-index: 1;
+        }
+
+        /* Nút Check-in (Floating Action Button) */
+        .fab-checkin {
+            position: absolute;
+            bottom: 30px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #007aff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 1000; /* Nổi trên bản đồ */
+            transition: transform 0.2s;
+        }
+        .fab-checkin:active { transform: scale(0.95); background-color: #0056b3; }
+
+        /* Popup thông tin trụ */
+        .pylon-popup b { color: #d32f2f; }
+        .btn-report {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <span class="menu-btn">☰</span>
+        <span class="page-title">Bản đồ lưới điện</span>
+    </header>
+
+    <div id="map"></div>
+
+    <div class="fab-checkin" onclick="performCheckIn()" title="Check-in vị trí">
+        📍
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+    <script src="js/firebase-config.js"></script>
+
+    <script src="js/ui-core.js"></script>
+
+    <script>
+        // --- DỮ LIỆU MẪU (Mô phỏng DB Firestore) ---
+        [span_1](start_span)// Dựa trên Nhóm 1: Tuyến Nhà Bè - An Nghĩa[span_1](end_span)
+        const pylons = [
+            { id: "NB-AN-01", code: "T01", lat: 10.6975, lng: 106.7565, status: "normal", line: "110kV Nhà Bè - An Nghĩa" },
+            { id: "NB-AN-02", code: "T02", lat: 10.6950, lng: 106.7580, status: "warning", line: "110kV Nhà Bè - An Nghĩa" }, // Trụ có cảnh báo
+            { id: "NB-AN-03", code: "T03", lat: 10.6925, lng: 106.7595, status: "normal", line: "110kV Nhà Bè - An Nghĩa" }
+        ];
+
+        let map, userMarker;
+
+        // Khởi tạo bản đồ khi trang tải xong
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+        });
+
+        function initMap() {
+            // Tọa độ trung tâm (Khu vực Nhà Bè TP.HCM)
+            map = L.map('map').setView([10.6950, 106.7580], 15);
+
+            // Thêm lớp bản đồ nền (OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Hiển thị các trụ điện lên bản đồ
+            renderPylons();
+
+            // Định vị người dùng ban đầu
+            locateUser();
+        }
+
+        function renderPylons() {
+            const pylonIconNormal = L.divIcon({
+                className: 'custom-icon',
+                html: '<div style="background-color:green; width:15px; height:15px; border-radius:50%; border:2px solid white;"></div>',
+                iconSize: [20, 20]
+            });
+
+            const pylonIconWarning = L.divIcon({
+                className: 'custom-icon',
+                html: '<div style="background-color:red; width:15px; height:15px; border-radius:50%; border:2px solid white; animation: blink 1s infinite;"></div>',
+                iconSize: [20, 20]
+            });
+
+            pylons.forEach(pylon => {
+                const icon = pylon.status === 'warning' ? pylonIconWarning : pylonIconNormal;
+                
+                const marker = L.marker([pylon.lat, pylon.lng], {icon: icon}).addTo(map);
+                
+                // Nội dung Popup khi bấm vào trụ
+                const popupContent = `
+                    <div class="pylon-popup">
+                        <h3>Trụ ${pylon.code}</h3>
+                        <p><b>Tuyến:</b> ${pylon.line}</p>
+                        <p><b>Trạng thái:</b> ${pylon.status === 'normal' ? 'Bình thường' : 'Cần kiểm tra'}</p>
+                        <button class="btn-report" onclick="window.location.href='report.html?pylon=${pylon.code}'">⚠️ Báo cáo sự cố</button>
+                    </div>
+                `;
+                marker.bindPopup(popupContent);
+            });
+        }
+
+        function locateUser() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const { latitude, longitude } = position.coords;
+                    
+                    // Icon người dùng
+                    const userIcon = L.divIcon({
+                        className: 'user-pos',
+                        html: '<div style="width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 20px solid blue;"></div>',
+                        iconSize: [20, 20]
+                    });
+
+                    if (userMarker) map.removeLayer(userMarker);
+                    userMarker = L.marker([latitude, longitude], {icon: userIcon}).addTo(map);
+                    
+                    // Zoom đến vị trí người dùng (chỉ lần đầu)
+                    // map.setView([latitude, longitude], 16);
+                });
+            }
+        }
+
+        // Chức năng Check-in (Logic giả lập)
+        window.performCheckIn = function() {
+            if (!navigator.geolocation) {
+                alert("Thiết bị không hỗ trợ GPS!");
+                return;
+            }
+
+            // Hiệu ứng loading
+            const btn = document.querySelector('.fab-checkin');
+            btn.innerHTML = '⏳';
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    
+                    // Giả sử khoảng cách chấp nhận được là 0.0005 độ (~50m)
+                    // Logic thực tế sẽ dùng công thức Haversine để tính khoảng cách tới trụ gần nhất
+                    
+                    // Demo: Luôn báo thành công và hiển thị tọa độ
+                    setTimeout(() => {
+                        alert(`✅ CHECK-IN THÀNH CÔNG!\n\nTọa độ: ${userLat.toFixed(5)}, ${userLng.toFixed(5)}\nThời gian: ${new Date().toLocaleString()}\n\nDữ liệu đã được gửi về máy chủ.`);
+                        btn.innerHTML = '📍'; // Reset icon
+                    }, 1000);
+                },
+                (error) => {
+                    alert("Không thể lấy vị trí. Vui lòng bật GPS.");
+                    btn.innerHTML = '📍';
+                }
+            );
+        };
+    </script>
+</body>
+</html>
