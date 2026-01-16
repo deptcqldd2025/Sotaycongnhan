@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Phương Án Thi Công - EVNHCMC</title>
+    <style>
+        /* CẤU HÌNH GIAO DIỆN NHẬP LIỆU (KHÔNG IN RA) */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+        .no-print { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .input-group { margin-bottom: 15px; display: flex; flex-direction: column; }
+        .input-group label { font-weight: bold; margin-bottom: 5px; color: #333; }
+        .input-group input, .input-group textarea, .input-group select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .row { display: flex; gap: 20px; }
+        .col { flex: 1; }
+        h2.section-title { border-bottom: 2px solid #0056b3; color: #0056b3; padding-bottom: 10px; margin-top: 30px; }
+        button.btn-add { background: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer; margin-top: 5px; border-radius: 4px; }
+        button.btn-remove { background: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer; margin-left: 5px; border-radius: 4px; }
+        button.btn-print { background: #0056b3; color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 4px; width: 100%; margin-top: 20px; }
+        button.btn-print:hover { background: #004494; }
+
+        /* CẤU HÌNH TRANG IN (A4 CHUẨN) */
+        @media print {
+            .no-print { display: none !important; }
+            @page { size: A4; margin: 2cm 1.5cm 2cm 2cm; }
+            body { background: white; font-family: "Times New Roman", Times, serif; font-size: 13pt; line-height: 1.3; }
+            .print-area { display: block !important; width: 100%; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+            th, td { border: 1px solid black; padding: 5px; vertical-align: middle; }
+            .border-none td { border: none; padding: 2px; }
+            .text-center { text-align: center; }
+            .text-bold { font-weight: bold; }
+            .header-left { float: left; width: 45%; text-align: center; font-size: 11pt; }
+            .header-right { float: right; width: 55%; text-align: center; font-size: 11pt; }
+            .clear { clear: both; }
+            h1 { font-size: 16pt; font-weight: bold; text-align: center; margin-top: 20px; margin-bottom: 10px; }
+            ul { margin: 5px 0 5px 20px; padding: 0; }
+            li { list-style-type: disc; margin-bottom: 5px; text-align: justify; }
+            .signature-block { margin-top: 30px; break-inside: avoid; }
+            .signature-col { width: 50%; float: left; text-align: center; }
+            .page-break { page-break-before: always; }
+        }
+        .print-area { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        <h1 style="text-align: center; color: #0056b3;">NHẬP LIỆU PHƯƠNG ÁN THI CÔNG</h1>
+        <p style="text-align: center; color: #666;">(Dành cho Đội Quản lý Lưới điện 2 - Tổ đường dây)</p>
+        
+        <h2 class="section-title">1. Thông tin chung</h2>
+        <div class="row">
+            <div class="col input-group">
+                <label>Số phương án:</label>
+                <input type="text" id="soPhuongAn" value="52/ĐQLLĐ2">
+            </div>
+            <div class="col input-group">
+                <label>Ngày lập:</label>
+                <input type="date" id="ngayLap" value="2026-01-16">
+            </div>
+        </div>
+        <div class="input-group">
+            <label>Tên công trình / Nội dung công việc:</label>
+            <textarea id="noiDungCV" rows="3">Phối hợp thí nghiệm hộp LineBox và thử nghiệm chống sét van trụ 23 và trong trạm Tân Bình 2, chặt cây khai quang đường dây 110KV Phú Lâm (171) - Pouyen (171) - Tân Bình 2 (172)</textarea>
+        </div>
+        <div class="input-group">
+            <label>Địa điểm công tác:</label>
+            <textarea id="diaDiem" rows="2">- Đường dây 110kV Phú Lâm (171) – Pouyen (171) - Tân Bình 2 (172).&#13;- Địa bàn thuộc phường Tân Tạo, phường Bình Hưng Hòa và phường Phú Thạnh</textarea>
+        </div>
+
+        <h2 class="section-title">2. Thời gian & Cắt điện</h2>
+        <div class="row">
+            <div class="col input-group">
+                <label>Ngày thi công:</label>
+                <input type="date" id="ngayThiCong" value="2026-01-18">
+            </div>
+            <div class="col input-group">
+                <label>Giờ bắt đầu:</label>
+                <input type="time" id="gioBatDau" value="08:00">
+            </div>
+            <div class="col input-group">
+                <label>Giờ kết thúc:</label>
+                <input type="time" id="gioKetThuc" value="16:00">
+            </div>
+        </div>
+        <div class="input-group">
+            <label>Phạm vi cắt điện:</label>
+            <input type="text" id="phamViCatDien" value="Cô lập đường dây 110kV Phú Lâm (171) – Pouyen (171) - Tân Bình 2 (172).">
+        </div>
+
+        <h2 class="section-title">3. Nhân sự (Tổ đường dây)</h2>
+        <div id="nhanSu-container">
+            </div>
+        <button type="button" class="btn-add" onclick="addNhanSu()">+ Thêm nhân sự</button>
+
+        <h2 class="section-title">4. Vật tư & Trang cụ (Chỉ nhập số lượng > 0)</h2>
+        <div id="vatTu-container">
+            </div>
+        <button type="button" class="btn-add" onclick="addVatTu()">+ Thêm vật tư/Trang cụ</button>
+
+        <h2 class="section-title">5. Người ký</h2>
+        <div class="row">
+            <div class="col input-group">
+                <label>Người lập (Tổ QLĐD):</label>
+                <input type="text" id="nguoiLap" value="Trần Ngọc Lâm">
+            </div>
+            <div class="col input-group">
+                <label>Đội phó duyệt:</label>
+                <input type="text" id="nguoiDuyet" value="Nguyễn Ngọc Thành Trường">
+            </div>
+        </div>
+
+        <button class="btn-print" onclick="printDocument()">XEM VÀ IN PHƯƠNG ÁN</button>
+    </div>
+
+    <div class="print-area">
+        <div class="header-left">
+            <strong>CÔNG TY LƯỚI ĐIỆN CAO THẾ<br>TP HỒ CHÍ MINH<br>ĐỘI QUẢN LÝ LƯỚI ĐIỆN 2</strong><br>
+            -------<br>
+            Số: <span id="p_soPA">...</span>
+        </div>
+        <div class="header-right">
+            <strong>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>Độc lập - Tự do - Hạnh phúc</strong><br>
+            -------<br>
+            <em>Tân Sơn Hòa, ngày <span id="p_ngay">..</span> tháng <span id="p_thang">..</span> năm <span id="p_nam">..</span></em>
+        </div>
+        <div class="clear"></div>
+
+        <h1>PHƯƠNG ÁN THI CÔNG VÀ BIỆN PHÁP AN TOÀN</h1>
+        <div class="text-center" style="margin-bottom: 20px;">
+            <strong>Về việc: <span id="p_tieuDe">...</span></strong>
+        </div>
+
+        <b>I. CƠ SỞ THIẾT LẬP:</b>
+        <ul>
+            <li>Căn cứ Quy trình An toàn điện số 959/QĐ-EVN ngày 26/07/2021 của Tổng Giám đốc Tập đoàn Điện lực Việt Nam;</li>
+            <li>Căn cứ quyết định 881/QĐ-EVN ngày 15/07/2021 V/v ban hành Quy trình an toàn thủy, cơ, nhiệt, hóa trong Tập đoàn Điện lực Quốc gia Việt Nam;</li>
+            <li>Căn cứ Cẩm nang an toàn Kiểm tra, bảo trì, sửa chữa đường dây và cáp ngầm 110, 220kV của Tổng Công ty Điện lực TP.HCM năm 2019;</li>
+            <li>Căn cứ Hướng dẫn lập PATC và BPAT (QĐ số 127/QĐ-LĐCT ngày 18/01/2024);</li>
+            <li>Căn cứ kế hoạch cắt điện và biên bản khảo sát hiện trường;</li>
+            <li><strong>Tổ đường dây</strong> lập phương án thi công và biện pháp an toàn như sau:</li>
+        </ul>
+
+        <b>II. CÁC THÔNG TIN LIÊN QUAN:</b><br>
+        <b>1. Các thông tin về công trình:</b>
+        <ul>
+            <li><strong>Nội dung công tác:</strong> <span id="p_noiDung">...</span></li>
+            <li><strong>Địa điểm công tác:</strong><br> <span id="p_diaDiem">...</span></li>
+            <li><strong>Đơn vị thi công:</strong> Tổ đường dây.</li>
+        </ul>
+        <b>2. Thời gian cắt điện và phạm vi cắt điện:</b>
+        <ul>
+            <li><strong>Thời gian:</strong> <span id="p_thoiGianCatDien">...</span> (Theo Phiếu công tác).</li>
+            <li><strong>Phạm vi:</strong> <span id="p_phamViCatDien">...</span></li>
+        </ul>
+
+        <b>III. KHỐI LƯỢNG CÔNG TÁC THỰC HIỆN:</b>
+        <ul>
+            <li>Tại trụ 23: Phối hợp thí nghiệm điện thực hiện việc thử nghiệm chống sét van.</li>
+            <li>Trong trạm Tân Bình 2: Thực hiện thử nghiệm hộp LineBox ngăn 172.</li>
+            <li>Hành lang tuyến: Chặt cây khai quang khoảng trụ 02 - 07, 33 - 34 (hoặc theo thực tế khảo sát).</li>
+            <li>Công tác phối hợp: Phối hợp Phòng TCHC (xe), Đội trực ban vận hành (cô lập lưới).</li>
+        </ul>
+
+        <b>IV. BIỆN PHÁP THI CÔNG:</b>
+        <ul>
+            <li>Dùng xe gàu nâng người và dụng cụ đồ nghề.</li>
+            <li>Đeo ủng, găng tay cách điện, sử dụng sào thử điện cao áp để thử hết điện.</li>
+            <li>Thực hiện tháo hộp LineBox và tiếp địa để thí nghiệm.</li>
+            <li>Phối hợp công ty thí nghiệm điện thực hiện việc thí nghiệm chống sét van tại trụ 23.</li>
+        </ul>
+
+        <b>V. KHỐI LƯỢNG VẬT TƯ, DỤNG CỤ, PHƯƠNG TIỆN:</b>
+        <table style="margin-top: 5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">STT</th>
+                    <th>Tên vật tư / Thiết bị / Dụng cụ</th>
+                    <th style="width: 15%;">Đơn vị</th>
+                    <th style="width: 15%;">Số lượng</th>
+                    <th style="width: 20%;">Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody id="p_tableVatTu">
+                </tbody>
+        </table>
+        
+        <div style="margin-bottom: 10px;">
+            <b>Thời gian thi công dự kiến:</b> Từ <span id="p_gioLam">...</span> ngày <span id="p_ngayLam">...</span>
+        </div>
+
+        <b>Bảng tiến độ thi công:</b>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nội dung công tác</th>
+                    <th>Nhóm công tác</th>
+                    <th>Thời gian</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Tập kết, nhận và bàn giao hiện trường, phổ biến BPAT</td>
+                    <td>Cả nhóm & CHTT</td>
+                    <td>07:30 - 08:00</td>
+                </tr>
+                <tr>
+                    <td>Thực hiện công tác (Thí nghiệm, chặt cây)</td>
+                    <td>Cả nhóm công tác</td>
+                    <td><span id="p_gioThiCongChinh">...</span></td>
+                </tr>
+                <tr>
+                    <td>Thu dọn hiện trường, trả phiếu PCT</td>
+                    <td>Cả nhóm công tác</td>
+                    <td>16:00 - 16:30</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <b>VI. BIỆN PHÁP AN TOÀN:</b>
+        <ul>
+            <li>Thử không còn điện tại các vị trí làm việc. Làm tiếp địa lưu động hai đầu vùng làm việc.</li>
+            <li>Nhân viên phải kiểm tra chất lượng dụng cụ an toàn, dây da, dây an toàn trước khi sử dụng.</li>
+            <li>Người CHTT kiểm tra sức khỏe, phổ biến nhiệm vụ và phạm vi làm việc.</li>
+            <li><strong>Lưu ý:</strong> Giữ khoảng cách an toàn với đường dây 110kV Bình Tân - Bà Quẹo đi chung trụ. Quan sát, xử lý côn trùng (ong) trước khi làm việc.</li>
+        </ul>
+
+        <div class="page-break"></div> <b>VII. PHÂN CÔNG NHIỆM VỤ TẠI CÔNG TRƯỜNG:</b>
+        <table style="margin-top: 5px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">STT</th>
+                    <th>Họ và tên</th>
+                    <th style="width: 15%;">Bậc AT</th>
+                    <th>Phân công nhiệm vụ</th>
+                </tr>
+            </thead>
+            <tbody id="p_tableNhanSu">
+                </tbody>
+        </table>
+
+        <b>VIII. CÁC LƯU Ý KHÁC:</b>
+        <ul>
+            <li>Thực hiện chế độ Phiếu công tác theo QĐ 959/QĐ-EVN.</li>
+            <li>Thực hiện "Livestream trong công tác giám sát an toàn tại hiện trường" theo QĐ 3716/QĐ-EVNHCMC ngày 16/09/2021.</li>
+        </ul>
+
+        <div class="signature-block">
+            <div class="signature-col">
+                <strong>DUYỆT<br>ĐỘI PHÓ</strong>
+                <br><br><br><br>
+                <strong id="p_nguoiDuyet">...</strong>
+            </div>
+            <div class="signature-col">
+                <strong>THIẾT LẬP<br>TỔ QLĐD</strong>
+                <br><br><br><br>
+                <strong id="p_nguoiLap">...</strong>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu mẫu ban đầu
+        const defaultNhanSu = [
+            { name: "Nguyễn Ngọc Thành Trường", bac: "5/5", task: "CHTT" },
+            { name: "Bùi Dương Đông", bac: "5/5", task: "Người cho phép, Giám sát ATĐ" },
+            { name: "Phùng Quang Trường", bac: "5/5", task: "Công nhân thực hiện" },
+            { name: "Trần Quốc Đạt", bac: "2/5", task: "Cảnh giới giao thông" },
+            { name: "Nguyễn Thanh Khoa", bac: "4/5", task: "Công nhân thực hiện" },
+            { name: "Nguyễn Minh Hải", bac: "4/5", task: "Công nhân thực hiện" },
+            { name: "Tài xế xe gàu", bac: "", task: "NV Phòng HC" }
+        ];
+
+        const defaultVatTu = [
+            { name: "Găng tay vải", unit: "Đôi", qty: "06", note: "" },
+            { name: "Xe Ranger", unit: "Xe", qty: "01", note: "BKS: ..." },
+            { name: "Xe Gàu", unit: "Xe", qty: "01", note: "" },
+            { name: "Sào thử điện 110kV", unit: "Cây", qty: "01", note: "" },
+            { name: "Tiếp địa lưu động cao thế", unit: "Bộ", qty: "02", note: "" },
+            { name: "Găng tay cách điện", unit: "Đôi", qty: "02", note: "Trên xe gàu" },
+            { name: "Ủng cách điện", unit: "Đôi", qty: "02", note: "Trên xe gàu" },
+            { name: "Túi cứu thương", unit: "Cái", qty: "01", note: "" }
+        ];
+
+        // Hàm render form nhập liệu
+        function renderInputForms() {
+            // Nhân sự
+            const nsContainer = document.getElementById('nhanSu-container');
+            nsContainer.innerHTML = '';
+            defaultNhanSu.forEach((ns, index) => {
+                const div = document.createElement('div');
+                div.className = 'row';
+                div.style.marginBottom = '5px';
+                div.innerHTML = `
+                    <div style="flex: 2"><input type="text" placeholder="Họ tên" value="${ns.name}" class="ns-name" style="width:95%"></div>
+                    <div style="flex: 1"><input type="text" placeholder="Bậc AT" value="${ns.bac}" class="ns-bac" style="width:90%"></div>
+                    <div style="flex: 3"><input type="text" placeholder="Nhiệm vụ" value="${ns.task}" class="ns-task" style="width:98%"></div>
+                    <button class="btn-remove" onclick="this.parentElement.remove()">Xóa</button>
+                `;
+                nsContainer.appendChild(div);
+            });
+
+            // Vật tư
+            const vtContainer = document.getElementById('vatTu-container');
+            vtContainer.innerHTML = '';
+            defaultVatTu.forEach((vt) => {
+                const div = document.createElement('div');
+                div.className = 'row';
+                div.style.marginBottom = '5px';
+                div.innerHTML = `
+                    <div style="flex: 3"><input type="text" placeholder="Tên VT/DC" value="${vt.name}" class="vt-name" style="width:95%"></div>
+                    <div style="flex: 1"><input type="text" placeholder="ĐVT" value="${vt.unit}" class="vt-unit" style="width:90%"></div>
+                    <div style="flex: 1"><input type="text" placeholder="SL" value="${vt.qty}" class="vt-qty" style="width:90%"></div>
+                    <div style="flex: 2"><input type="text" placeholder="Ghi chú" value="${vt.note}" class="vt-note" style="width:95%"></div>
+                    <button class="btn-remove" onclick="this.parentElement.remove()">Xóa</button>
+                `;
+                vtContainer.appendChild(div);
+            });
+        }
+
+        function addNhanSu() {
+            const div = document.createElement('div');
+            div.className = 'row';
+            div.style.marginBottom = '5px';
+            div.innerHTML = `
+                <div style="flex: 2"><input type="text" placeholder="Họ tên" class="ns-name" style="width:95%"></div>
+                <div style="flex: 1"><input type="text" placeholder="Bậc AT" class="ns-bac" style="width:90%"></div>
+                <div style="flex: 3"><input type="text" placeholder="Nhiệm vụ" class="ns-task" style="width:98%"></div>
+                <button class="btn-remove" onclick="this.parentElement.remove()">Xóa</button>
+            `;
+            document.getElementById('nhanSu-container').appendChild(div);
+        }
+
+        function addVatTu() {
+            const div = document.createElement('div');
+            div.className = 'row';
+            div.style.marginBottom = '5px';
+            div.innerHTML = `
+                <div style="flex: 3"><input type="text" placeholder="Tên VT/DC" class="vt-name" style="width:95%"></div>
+                <div style="flex: 1"><input type="text" placeholder="ĐVT" class="vt-unit" style="width:90%"></div>
+                <div style="flex: 1"><input type="text" placeholder="SL" class="vt-qty" style="width:90%"></div>
+                <div style="flex: 2"><input type="text" placeholder="Ghi chú" class="vt-note" style="width:95%"></div>
+                <button class="btn-remove" onclick="this.parentElement.remove()">Xóa</button>
+            `;
+            document.getElementById('vatTu-container').appendChild(div);
+        }
+
+        function printDocument() {
+            // 1. Map dữ liệu cơ bản
+            document.getElementById('p_soPA').innerText = document.getElementById('soPhuongAn').value;
+            
+            const d = new Date(document.getElementById('ngayLap').value);
+            document.getElementById('p_ngay').innerText = d.getDate();
+            document.getElementById('p_thang').innerText = d.getMonth() + 1;
+            document.getElementById('p_nam').innerText = d.getFullYear();
+
+            document.getElementById('p_tieuDe').innerText = document.getElementById('noiDungCV').value;
+            document.getElementById('p_noiDung').innerText = document.getElementById('noiDungCV').value;
+            // Thay ký tự xuống dòng bằng thẻ <br> cho địa điểm
+            document.getElementById('p_diaDiem').innerHTML = document.getElementById('diaDiem').value.replace(/\n/g, '<br>');
+
+            // Thời gian
+            const dThiCong = new Date(document.getElementById('ngayThiCong').value);
+            const strNgayThiCong = `${dThiCong.getDate()}/${dThiCong.getMonth()+1}/${dThiCong.getFullYear()}`;
+            const gioStart = document.getElementById('gioBatDau').value;
+            const gioEnd = document.getElementById('gioKetThuc').value;
+            
+            document.getElementById('p_thoiGianCatDien').innerText = `${gioStart} - ${gioEnd} ngày ${strNgayThiCong}`;
+            document.getElementById('p_phamViCatDien').innerText = document.getElementById('phamViCatDien').value;
+            document.getElementById('p_gioLam').innerText = `${gioStart} đến ${gioEnd}`;
+            document.getElementById('p_ngayLam').innerText = strNgayThiCong;
+            document.getElementById('p_gioThiCongChinh').innerText = `${gioStart} - ${gioEnd}`;
+
+            // Người ký
+            document.getElementById('p_nguoiLap').innerText = document.getElementById('nguoiLap').value;
+            document.getElementById('p_nguoiDuyet').innerText = document.getElementById('nguoiDuyet').value.toUpperCase();
+
+            // 2. Render bảng Nhân sự
+            const tableNS = document.getElementById('p_tableNhanSu');
+            tableNS.innerHTML = "";
+            const listNS = document.querySelectorAll('#nhanSu-container .row');
+            listNS.forEach((row, index) => {
+                const name = row.querySelector('.ns-name').value;
+                const bac = row.querySelector('.ns-bac').value;
+                const task = row.querySelector('.ns-task').value;
+                if(name) {
+                    tableNS.innerHTML += `<tr><td class="text-center">${index + 1}</td><td>${name}</td><td class="text-center">${bac}</td><td>${task}</td></tr>`;
+                }
+            });
+
+            // 3. Render bảng Vật tư
+            const tableVT = document.getElementById('p_tableVatTu');
+            tableVT.innerHTML = "";
+            const listVT = document.querySelectorAll('#vatTu-container .row');
+            let stt = 1;
+            listVT.forEach((row) => {
+                const name = row.querySelector('.vt-name').value;
+                const unit = row.querySelector('.vt-unit').value;
+                const qty = row.querySelector('.vt-qty').value;
+                const note = row.querySelector('.vt-note').value;
+                
+                // Logic loại bỏ dòng số lượng 0 hoặc 00 hoặc rỗng
+                if(qty && qty !== '0' && qty !== '00' && name) {
+                    tableVT.innerHTML += `<tr><td class="text-center">${stt++}</td><td>${name}</td><td class="text-center">${unit}</td><td class="text-center">${qty}</td><td>${note}</td></tr>`;
+                }
+            });
+
+            // Lệnh in
+            window.print();
+        }
+
+        // Khởi chạy lần đầu
+        renderInputForms();
+    </script>
+</body>
+</html>
