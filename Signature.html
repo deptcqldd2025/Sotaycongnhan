@@ -3,32 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVN E-Signer - Ký Số Tự Động</title>
+    <title>EVN E-Signer - Ký Số Thông Minh</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.min.js"></script>
     <script src="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <style>
-        body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .header-evn {
-            background: linear-gradient(90deg, #0056b3 0%, #004494 100%);
-            color: white; padding: 15px 0; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .card-custom { border: none; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        .btn-evn { background-color: #0056b3; color: white; font-weight: 600; padding: 12px 30px; }
-        .btn-evn:hover { background-color: #003d82; color: white; }
-        .status-log { background: #000; color: #0f0; font-family: monospace; padding: 10px; border-radius: 5px; height: 150px; overflow-y: auto; font-size: 12px; display: none; }
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .header-app { background: #0056b3; color: white; padding: 15px 0; margin-bottom: 20px; }
+        .card-custom { border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: none; }
+        .btn-primary { background-color: #0056b3; border: none; padding: 10px 20px; }
+        .log-box { background: #1e1e1e; color: #00ff00; font-family: monospace; padding: 15px; border-radius: 5px; height: 200px; overflow-y: auto; font-size: 13px; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
 
-<div class="header-evn">
-    <div class="container d-flex justify-content-between align-items-center">
-        <h4 class="m-0">✍️ HỆ THỐNG KÝ SỐ TỰ ĐỘNG</h4>
-        <span class="badge bg-light text-primary">Web Version</span>
+<div class="header-app">
+    <div class="container">
+        <h4 class="m-0">✍️ HỆ THỐNG KÝ SỐ (CHỈ KÝ CUỐI TRANG)</h4>
     </div>
 </div>
 
@@ -36,64 +29,63 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card card-custom p-4">
-                <h5 class="mb-4 text-primary fw-bold border-bottom pb-2">Thiết lập thông số</h5>
-                
+                <div class="alert alert-info">
+                    <strong>Cập nhật mới:</strong> Hệ thống sẽ tự động bỏ qua tên ở phần đầu trang/giữa trang và <b>chỉ ký vào vị trí thấp nhất (cuối trang)</b>.
+                </div>
+
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Tên cần tìm:</label>
+                        <label class="fw-bold">Tên người ký:</label>
                         <input type="text" id="nameToFind" class="form-control" value="Trần Công Đẹp">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Khoảng cách (Offset Y):</label>
+                        <label class="fw-bold">Vị trí (Offset Y):</label>
                         <input type="number" id="offsetY" class="form-control" value="0" placeholder="Số âm để đè lên tên">
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Chiều rộng chữ ký:</label>
+                        <label class="fw-bold">Kích thước Rộng:</label>
                         <input type="number" id="sigWidth" class="form-control" value="140">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Chiều cao chữ ký:</label>
+                        <label class="fw-bold">Kích thước Cao:</label>
                         <input type="number" id="sigHeight" class="form-control" value="70">
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-bold">1. Chọn file PDF:</label>
+                    <label class="fw-bold">1. File PDF:</label>
                     <input type="file" id="pdfFile" class="form-control" accept=".pdf">
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label fw-bold">2. Chọn ảnh chữ ký (PNG/JPG):</label>
-                    <input type="file" id="imgFile" class="form-control" accept=".png,.jpg,.jpeg">
+                    <label class="fw-bold">2. Ảnh chữ ký (PNG):</label>
+                    <input type="file" id="imgFile" class="form-control" accept=".png,.jpg">
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="onlyLastPage">
+                    <label class="form-check-label text-danger fw-bold" for="onlyLastPage">Chỉ ký duy nhất trang cuối cùng của file (Dùng cho tờ trình)</label>
                 </div>
 
-                <div class="text-center">
-                    <button class="btn btn-evn w-100 shadow" onclick="startSigning()">
-                        🚀 BẮT ĐẦU KÝ & TẢI VỀ
-                    </button>
-                </div>
+                <button class="btn btn-primary w-100 fw-bold" onclick="startSigning()">🚀 KÝ TÊN & TẢI VỀ</button>
 
-                <div id="statusLog" class="status-log mt-3"></div>
-            </div>
-            <div class="text-center mt-3 text-muted small">
-                Ứng dụng chạy hoàn toàn trên trình duyệt của bạn. File không được gửi đi đâu cả (Bảo mật 100%).
+                <div id="statusLog" class="log-box"></div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // --- CẤU HÌNH PDF.JS ---
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js';
 
     function log(msg) {
-        const logDiv = document.getElementById('statusLog');
-        logDiv.style.display = 'block';
-        logDiv.innerHTML += `> ${msg}<br>`;
-        logDiv.scrollTop = logDiv.scrollHeight;
+        const d = document.getElementById('statusLog');
+        d.style.display = 'block';
+        d.innerHTML += `> ${msg}<br>`;
+        d.scrollTop = d.scrollHeight;
     }
 
     async function startSigning() {
@@ -103,98 +95,102 @@
         const width = parseInt(document.getElementById('sigWidth').value);
         const height = parseInt(document.getElementById('sigHeight').value);
         const offset = parseInt(document.getElementById('offsetY').value);
+        const onlyLastPage = document.getElementById('onlyLastPage').checked;
 
-        if (!pdfInput || !imgInput) {
-            alert("Vui lòng chọn đủ File PDF và Ảnh chữ ký!");
-            return;
-        }
+        if (!pdfInput || !imgInput) return alert("Thiếu file!");
 
         document.getElementById('statusLog').innerHTML = "";
-        log("Đang đọc file...");
+        log("Đang xử lý...");
 
         try {
-            // 1. Đọc file
             const pdfBytes = await pdfInput.arrayBuffer();
             const imgBytes = await imgInput.arrayBuffer();
 
-            // 2. Khởi tạo thư viện PDF-LIB để chỉnh sửa
             const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
             
-            // Nhúng ảnh chữ ký
-            let signatureImage;
-            if (imgInput.name.toLowerCase().endsWith('.png')) {
-                signatureImage = await pdfDoc.embedPng(imgBytes);
-            } else {
-                signatureImage = await pdfDoc.embedJpg(imgBytes);
-            }
+            // Nhúng ảnh
+            let sigImg;
+            if (imgInput.name.toLowerCase().endsWith('.png')) sigImg = await pdfDoc.embedPng(imgBytes);
+            else sigImg = await pdfDoc.embedJpg(imgBytes);
 
-            // 3. Dùng PDF.JS để QUÉT VỊ TRÍ CHỮ (Đây là phần khó nhất ở JS)
             const loadingTask = pdfjsLib.getDocument({data: pdfBytes});
             const pdfScanner = await loadingTask.promise;
             
             let count = 0;
             const totalPages = pdfScanner.numPages;
 
-            log(`Tổng số trang: ${totalPages}. Đang quét tìm tên "${nameToFind}"...`);
+            // Xác định trang cần quét (Nếu tích chọn 'Chỉ trang cuối' thì chỉ quét trang cuối)
+            let startPage = 1; 
+            let endPage = totalPages;
+            
+            if (onlyLastPage) {
+                startPage = totalPages;
+                log("⚠️ Chế độ: Chỉ ký trang cuối cùng của file.");
+            } else {
+                log("ℹ️ Chế độ: Ký vào vị trí thấp nhất của mỗi trang.");
+            }
 
-            for (let i = 1; i <= totalPages; i++) {
+            for (let i = startPage; i <= endPage; i++) {
                 const page = await pdfScanner.getPage(i);
                 const textContent = await page.getTextContent();
-                const viewport = page.getViewport({scale: 1}); // Lấy kích thước chuẩn
+                
+                // Mảng chứa các vị trí tìm thấy tên trong trang này
+                let matchesOnPage = [];
 
-                // Duyệt qua từng dòng chữ trong trang
                 for (let item of textContent.items) {
-                    // Kiểm tra xem dòng chữ có chứa Tên không
                     if (item.str.includes(nameToFind)) {
-                        log(`--> Tìm thấy tại trang ${i}`);
-                        
-                        // Lấy toạ độ từ PDF.JS
-                        // item.transform là mảng [scaleX, skewY, skewX, scaleY, x, y]
-                        const x_text = item.transform[4]; 
-                        const y_text = item.transform[5];
-                        const textWidth = item.width; // Chiều rộng của dòng chữ
-                        
-                        // Tính toán vị trí chèn (tương tự logic Python cũ)
-                        const x_img = x_text + (textWidth - width) / 2;
-                        const y_img = y_text + offset; // PDF-Lib và PDF.JS đều dùng hệ toạ độ từ dưới lên (Bottom-Left)
-
-                        // Chèn vào trang bằng PDF-LIB
-                        const pdfPage = pdfDoc.getPages()[i - 1]; // Trang trong pdf-lib bắt đầu từ 0
-                        
-                        // Điều chỉnh y một chút vì font chữ có độ cao
-                        const adjustedY = y_img + 5; 
-
-                        pdfPage.drawImage(signatureImage, {
-                            x: x_img,
-                            y: adjustedY,
-                            width: width,
-                            height: height,
-                        });
-                        count++;
+                        matchesOnPage.push(item);
                     }
+                }
+
+                // NẾU TÌM THẤY TÊN TRONG TRANG
+                if (matchesOnPage.length > 0) {
+                    // Sắp xếp theo vị trí Y (từ thấp đến cao)
+                    // Trong PDF, toạ độ (0,0) là góc dưới cùng bên trái.
+                    // Nghĩa là Y càng nhỏ thì càng nằm gần đáy trang.
+                    
+                    matchesOnPage.sort((a, b) => a.transform[5] - b.transform[5]);
+
+                    // Lấy phần tử đầu tiên (có Y nhỏ nhất -> nằm dưới cùng nhất)
+                    const bestMatch = matchesOnPage[0]; 
+
+                    log(`--> Trang ${i}: Tìm thấy ${matchesOnPage.length} vị trí. Chọn vị trí thấp nhất (Y=${Math.round(bestMatch.transform[5])}).`);
+                    
+                    const x_text = bestMatch.transform[4];
+                    const y_text = bestMatch.transform[5];
+                    const textWidth = bestMatch.width;
+                    
+                    const x_img = x_text + (textWidth - width) / 2;
+                    const y_img = y_text + offset;
+                    
+                    const pdfPage = pdfDoc.getPages()[i - 1];
+                    
+                    pdfPage.drawImage(sigImg, {
+                        x: x_img,
+                        y: y_img + 5, // Điều chỉnh nhẹ lên trên dòng kẻ
+                        width: width,
+                        height: height,
+                    });
+                    count++;
                 }
             }
 
             if (count > 0) {
-                // 4. Lưu và tải về
-                log("Đang tạo file mới...");
                 const pdfBytesSaved = await pdfDoc.save();
                 const blob = new Blob([pdfBytesSaved], { type: 'application/pdf' });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
                 link.download = pdfInput.name.replace(".pdf", "_signed.pdf");
                 link.click();
-                log(`✅ THÀNH CÔNG! Đã ký ${count} chỗ.`);
-                alert(`Đã ký xong ${count} vị trí! File đang được tải xuống.`);
+                log(`✅ XONG! Đã ký ${count} chỗ.`);
             } else {
-                log("⚠️ KHÔNG TÌM THẤY TÊN.");
-                alert("Không tìm thấy tên trong file. Lưu ý: Phiên bản Web tìm kiếm chính xác từng ký tự, nếu tên bị ngắt dòng có thể không thấy.");
+                log("⚠️ Không tìm thấy tên để ký.");
+                alert("Không tìm thấy tên trong phạm vi đã chọn.");
             }
 
-        } catch (error) {
-            console.error(error);
-            log(`❌ LỖI: ${error.message}`);
-            alert("Có lỗi xảy ra. Xem chi tiết trong khung đen.");
+        } catch (e) {
+            console.error(e);
+            log("❌ Lỗi: " + e.message);
         }
     }
 </script>
