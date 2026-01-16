@@ -2,414 +2,395 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Phương Án Thi Công - EVNHCMC - V2.3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phương Án Thi Công - Chuẩn Mẫu PDF - V3.0</title>
     <style>
         :root {
             --primary-color: #0056b3;
-            --secondary-color: #f0f2f5;
-            --text-color: #333;
-            --border-radius: 8px;
+            --bg-color: #f4f6f9;
         }
 
         body {
-            font-family: 'Times New Roman', serif; /* Font chuẩn văn bản */
+            font-family: 'Times New Roman', serif;
+            background-color: var(--bg-color);
             margin: 0;
             padding: 20px;
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-        }
-
-        /* --- CSS CHO GIAO DIỆN NHẬP LIỆU (Màn hình máy tính/đt) --- */
-        .container {
-            font-family: 'Segoe UI', sans-serif; /* Font hiện đại cho giao diện nhập */
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        h1 { text-align: center; color: var(--primary-color); margin-bottom: 20px; font-size: 1.5rem; }
-        .version-info { text-align: right; font-size: 0.8rem; color: #666; margin-bottom: 15px; font-style: italic; }
-        
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; }
-        
-        input[type="text"], input[type="date"], select, textarea {
-            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 1rem;
-        }
-
-        .worker-list-container {
-            border: 1px solid #ddd; border-radius: 4px; padding: 10px;
-            max-height: 400px; overflow-y: auto; background: #fff;
-        }
-
-        .worker-row {
-            display: flex; align-items: center; flex-wrap: wrap;
-            margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee;
-            background-color: #fafafa; border-radius: 4px;
-        }
-        .worker-row.active { background-color: #e3f2fd; border-left: 4px solid var(--primary-color); }
-        
-        .worker-check { margin-right: 10px; transform: scale(1.2); }
-        .worker-info { flex: 1; min-width: 200px; margin-right: 10px; }
-        .worker-name { font-weight: bold; display: block; }
-        .worker-grade { font-size: 0.85rem; color: #666; background: #e9ecef; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
-        .worker-role-select { flex: 1; min-width: 180px; }
-        .worker-role-select select { padding: 5px; width: 100%; }
-
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        button {
-            flex: 1; padding: 12px 20px; border: none; border-radius: var(--border-radius);
-            cursor: pointer; font-size: 1rem; font-weight: bold; color: white; transition: background 0.3s;
-        }
-        .btn-save { background-color: var(--primary-color); }
-        .btn-print { background-color: #28a745; }
-        .btn-back { background-color: #6c757d; margin-bottom: 20px; width: auto; display: inline-block; padding: 8px 15px; font-size: 0.9rem;}
-
-        .section-title {
-            background-color: #e9ecef; padding: 8px; margin: 20px -20px 15px -20px;
-            padding-left: 20px; font-weight: bold; color: var(--primary-color); border-left: 5px solid var(--primary-color);
-        }
-
-        /* --- CSS CHO TRANG IN (KHỔ A4 CHUẨN) --- */
-        #printArea {
-            display: none;
-            background: white;
-            width: 210mm; /* Khổ A4 */
-            min-height: 297mm;
-            padding: 15mm 15mm; /* Lề chuẩn văn bản */
-            margin: 0 auto;
             color: #000;
+        }
+
+        /* --- GIAO DIỆN NHẬP LIỆU (ẨN KHI IN) --- */
+        .input-panel {
+            font-family: 'Segoe UI', sans-serif;
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .input-panel h2 { color: var(--primary-color); text-align: center; margin-top: 0; }
+        .version-info { text-align: right; font-style: italic; color: #666; font-size: 0.9rem; margin-bottom: 10px; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 5px; }
+        .form-control {
+            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 1rem;
+        }
+        
+        .worker-list { border: 1px solid #ddd; padding: 10px; max-height: 300px; overflow-y: auto; border-radius: 4px; }
+        .worker-item { display: flex; align-items: center; padding: 5px; border-bottom: 1px solid #eee; }
+        .worker-item:last-child { border-bottom: none; }
+        .worker-name { flex: 1; font-weight: 500; }
+        .worker-role { margin-left: 10px; padding: 5px; border: 1px solid #ddd; border-radius: 3px; }
+
+        .btn-action {
+            display: block; width: 100%; padding: 12px; background: var(--primary-color); color: white;
+            border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 20px;
+        }
+        .btn-action:hover { background: #004494; }
+        
+        /* --- GIAO DIỆN IN (KHỔ A4 CHUẨN) --- */
+        #print-document {
+            display: none; /* Ẩn mặc định */
+            background: white;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm 20mm; /* Lề trái 20mm, phải 15mm */
+            margin: 0 auto;
             box-sizing: border-box;
             line-height: 1.3;
+            font-size: 13pt; /* Cỡ chữ chuẩn văn bản */
         }
 
-        /* Header bảng */
-        .print-header-table { width: 100%; margin-bottom: 20px; border: none; }
-        .print-header-table td { vertical-align: top; text-align: center; border: none; padding: 0; }
+        /* Header Quốc hiệu/Tiêu ngữ */
+        .header-table { width: 100%; margin-bottom: 10px; border: none; }
+        .header-table td { vertical-align: top; text-align: center; padding: 0; }
+        .company-name { font-weight: bold; font-size: 11pt; }
+        .unit-name { font-weight: bold; font-size: 11pt; text-decoration: underline; }
+        .motto { font-weight: bold; font-size: 11pt; }
+        .sub-motto { font-weight: bold; font-size: 12pt; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 3px; }
+        .date-line { font-style: italic; font-size: 12pt; margin-top: 5px; }
+
+        .doc-title { text-align: center; font-weight: bold; font-size: 14pt; margin: 20px 0 10px 0; }
+        .doc-subtitle { text-align: center; font-weight: bold; font-size: 13pt; margin-bottom: 20px; text-transform: uppercase; }
+
+        /* Các mục lớn I, II, III... */
+        .section-header { font-weight: bold; margin-top: 15px; margin-bottom: 5px; text-transform: uppercase;}
+        .section-sub { font-weight: bold; margin-top: 10px; margin-bottom: 5px; }
         
-        .don-vi { font-weight: bold; font-size: 11pt; }
-        .quoc-hieu { font-weight: bold; font-size: 11pt; }
-        .tieu-ngu { font-weight: bold; font-size: 12pt; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 2px; }
+        .content-para { text-align: justify; margin-bottom: 5px; margin-left: 0; }
+        .list-item { margin-left: 20px; margin-bottom: 5px; text-align: justify; }
 
-        .print-title { text-align: center; font-weight: bold; font-size: 14pt; margin: 20px 0 10px 0; text-transform: uppercase; }
-        
-        .print-info-line { margin-bottom: 8px; font-size: 12pt; }
-        .bold-label { font-weight: bold; }
+        /* Bảng biểu chuẩn */
+        .standard-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12pt; }
+        .standard-table th, .standard-table td { border: 1px solid #000; padding: 5px; vertical-align: middle; }
+        .standard-table th { background-color: #f0f0f0; text-align: center; font-weight: bold; }
+        .text-center { text-align: center; }
+        .text-bold { font-weight: bold; }
 
-        /* Bảng chính */
-        .main-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12pt; }
-        .main-table th, .main-table td { border: 1px solid #000; padding: 6px 8px; text-align: left; vertical-align: top; }
-        .main-table th { background-color: #f0f0f0; text-align: center; font-weight: bold; }
-        .center-text { text-align: center; }
+        /* Chữ ký */
+        .sign-table { width: 100%; margin-top: 30px; border: none; }
+        .sign-table td { text-align: center; vertical-align: top; width: 50%; border: none; }
+        .sign-title { font-weight: bold; text-transform: uppercase; margin-bottom: 80px; }
 
-        /* Phần chữ ký */
-        .sign-table { width: 100%; margin-top: 40px; border: none; }
-        .sign-table td { text-align: center; vertical-align: top; border: none; padding: 0; width: 25%; }
-        .sign-title { font-weight: bold; font-size: 11pt; text-transform: uppercase; margin-bottom: 80px; }
-        .sign-name { font-weight: bold; font-size: 11pt; }
+        /* Chế độ Editable cho phần in (để sửa nhanh lỗi chính tả khi xem trước) */
+        .editable { outline: none; }
+        .editable:hover { background-color: #fff8dc; cursor: text; }
 
-        /* Ẩn hiện khi in */
         @media print {
-            body { background: white; padding: 0; margin: 0; }
-            .container { display: none !important; }
-            #printArea { display: block !important; width: 100%; margin: 0; padding: 10mm 10mm; page-break-after: always; }
-            .no-print { display: none !important; }
+            body { background: white; padding: 0; }
+            .input-panel { display: none !important; }
+            #print-document { display: block !important; width: 100%; margin: 0; padding: 15mm 15mm; page-break-after: always; }
             @page { size: A4; margin: 0; }
         }
     </style>
 </head>
 <body>
 
-<div class="container" id="inputForm">
-    <div class="version-info">Phiên bản: 2.3 | Ngày: 16/01/2026</div>
-    <h1>LẬP PHƯƠNG ÁN THI CÔNG</h1>
-
-    <div class="section-title">I. THÔNG TIN CHUNG</div>
-    <div class="form-group">
-        <label>Đơn vị thực hiện (Tổ/Đội):</label>
-        <input type="text" id="donVi" value="Tổ Đường dây - Đội Cao thế...">
-    </div>
-    <div class="form-group">
-        <label>Ngày thực hiện:</label>
-        <input type="date" id="ngayKhaoSat">
-    </div>
-    <div class="form-group">
-        <label>Tên công trình / Công việc:</label>
-        <input type="text" id="tenCongViec" placeholder="Ví dụ: Thay sứ cách điện trụ 45...">
-    </div>
-    <div class="form-group">
-        <label>Địa điểm / Vị trí:</label>
-        <input type="text" id="diaDiem" placeholder="Ví dụ: Trụ 45 tuyến 110kV...">
-    </div>
-
-    <div class="section-title">II. NHÂN SỰ VÀ XE CƠ GIỚI</div>
-    <div class="form-group"><label>Lái xe gàu:</label><select id="laiXeGau"><option value="">-- Không --</option></select></div>
-    <div class="form-group"><label>Lái xe cẩu:</label><select id="laiXeCau"><option value="">-- Không --</option></select></div>
-
-    <div class="section-title">III. PHÂN CÔNG TỔ ĐƯỜNG DÂY</div>
-    <div class="worker-list-container" id="listCongNhan"></div>
-
-    <div class="section-title">IV. NỘI DUNG & BIỆN PHÁP</div>
-    <div class="form-group">
-        <label>1. Kết quả khảo sát / Hiện trạng:</label>
-        <textarea id="noiDung" rows="3"></textarea>
-    </div>
-    <div class="form-group">
-        <label>2. Biện pháp an toàn & Tổ chức thi công:</label>
-        <textarea id="ghiChu" rows="3"></textarea>
-    </div>
-    <div class="form-group">
-        <label>Người lập phương án (Ký tên):</label>
-        <input type="text" id="nguoiLap" placeholder="Nhập tên người lập...">
-    </div>
-
-    <div class="btn-group">
-        <button class="btn-save" onclick="luuDuLieu()">LƯU DỮ LIỆU</button>
-        <button class="btn-print" onclick="xemVaIn()">XEM & IN PHƯƠNG ÁN</button>
-    </div>
-</div>
-
-<div id="printArea">
-    <div class="no-print" style="margin-bottom: 10px;">
-        <button class="btn-back" onclick="quayLai()">&#8592; Quay lại sửa</button>
-        <button class="btn-print" onclick="window.print()" style="float:right; width:auto; padding: 8px 15px;">In ngay (Ctrl+P)</button>
-    </div>
-
-    <table class="print-header-table">
-        <tr>
-            <td style="width: 45%;">
-                CÔNG TY LƯỚI ĐIỆN CAO THẾ<br>
-                <span id="p_donVi" style="font-weight:bold;">TỔ ĐƯỜNG DÂY</span><br>
-                -----------
-            </td>
-            <td style="width: 55%;">
-                CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>
-                <span class="tieu-ngu">Độc lập - Tự do - Hạnh phúc</span>
-            </td>
-        </tr>
-    </table>
-
-    <div class="print-title">PHƯƠNG ÁN KHẢO SÁT / THI CÔNG</div>
-    
-    <div style="text-align: center; font-style: italic; margin-bottom: 20px;">
-        Kính gửi: Lãnh đạo Đội QLVH Lưới điện cao thế
-    </div>
-
-    <div class="print-info-line"><span class="bold-label">1. Tên công việc:</span> <span id="p_tenCongViec">...</span></div>
-    <div class="print-info-line"><span class="bold-label">2. Địa điểm:</span> <span id="p_diaDiem">...</span></div>
-    <div class="print-info-line"><span class="bold-label">3. Thời gian dự kiến:</span> <span id="p_ngay">...</span></div>
-
-    <div class="print-info-line" style="margin-top: 15px;"><span class="bold-label">4. Thành phần đoàn công tác:</span></div>
-    
-    <table class="main-table">
-        <thead>
-            <tr>
-                <th style="width: 50px;">STT</th>
-                <th>Họ và tên</th>
-                <th style="width: 80px;">Bậc AT</th>
-                <th>Chức danh / Nhiệm vụ được phân công</th>
-            </tr>
-        </thead>
-        <tbody id="p_tableBody">
-            </tbody>
-    </table>
-
-    <div class="print-info-line" style="margin-top: 15px;"><span class="bold-label">5. Nội dung công việc & Hiện trạng lưới điện:</span></div>
-    <div id="p_noiDung" style="border: 1px solid #000; padding: 10px; min-height: 80px; white-space: pre-line;"></div>
-
-    <div class="print-info-line" style="margin-top: 15px;"><span class="bold-label">6. Biện pháp tổ chức thi công & An toàn điện:</span></div>
-    <div id="p_ghiChu" style="border: 1px solid #000; padding: 10px; min-height: 80px; white-space: pre-line;"></div>
-
-    <table class="sign-table">
-        <tr>
-            <td>
-                <div class="sign-title">NGƯỜI LẬP PA</div>
-                <div class="sign-name" id="p_nguoiLap" style="margin-top: 80px;">...</div>
-            </td>
-            <td>
-                <div class="sign-title">CHỈ HUY TRỰC TIẾP</div>
-            </td>
-            <td>
-                <div class="sign-title">ĐƠN VỊ QLVH</div>
-            </td>
-            <td>
-                <div class="sign-title">DUYỆT LÃNH ĐẠO</div>
-            </td>
-        </tr>
-    </table>
-</div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyCzWjfcD5Dgq7V-i2izb9tKLR6QM6qWPQo",
-        authDomain: "tavietnam-78ae8.firebaseapp.com",
-        projectId: "tavietnam-78ae8",
-        storageBucket: "tavietnam-78ae8.firebasestorage.app",
-        messagingSenderId: "670121705534",
-        appId: "1:670121705534:web:1027ad98550573ad37116f"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    const DS_LAI_XE_GAU = ["Nguyễn Văn A (Gàu)", "Trần Văn B (Gàu)", "Lê Văn C (Gàu)"];
-    const DS_LAI_XE_CAU = ["Phạm Văn X (Cẩu)", "Hoàng Văn Y (Cẩu)", "Vũ Văn Z (Cẩu)"];
-    const DS_CONG_NHAN = [
-        { name: "Nguyễn Văn An", bat: "5/5" },
-        { name: "Trần Thị Bình", bat: "5/5" },
-        { name: "Lê Quốc Cường", bat: "4/5" },
-        { name: "Phạm Minh Dũng", bat: "4/5" },
-        { name: "Đỗ Văn Em", bat: "3/5" },
-        { name: "Bùi Thị F", bat: "3/5" },
-        { name: "Võ Văn Giàu", bat: "2/5" },
-        { name: "Đặng Văn Hùng", bat: "5/5" }
-    ];
-    const CHUC_DANH = ["Công nhân thực hiện", "CHTT (Chỉ huy trực tiếp)", "NCP kiêm GSATĐ", "Cảnh giới giao thông"];
-
-    function initApp() {
-        document.getElementById('ngayKhaoSat').value = new Date().toISOString().split('T')[0];
+    <div class="input-panel">
+        <div class="version-info">Version 3.0 | Ngày: 16/01/2026</div>
+        <h2>NHẬP THÔNG TIN PHƯƠNG ÁN</h2>
         
-        const selectGau = document.getElementById('laiXeGau');
-        DS_LAI_XE_GAU.forEach(n => selectGau.add(new Option(n, n)));
-        const selectCau = document.getElementById('laiXeCau');
-        DS_LAI_XE_CAU.forEach(n => selectCau.add(new Option(n, n)));
+        <div class="form-group">
+            <label>Ngày thực hiện:</label>
+            <input type="date" id="inpDate" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label>Tên công việc (Viết in hoa):</label>
+            <input type="text" id="inpJobName" class="form-control" placeholder="Ví dụ: PHỐI HỢP THÍ NGHIỆM HỘP LINEBOX...">
+        </div>
 
-        const container = document.getElementById('listCongNhan');
-        DS_CONG_NHAN.forEach((cn, index) => {
-            const row = document.createElement('div');
-            row.className = 'worker-row';
-            row.id = `row_${index}`;
+        <div class="form-group">
+            <label>Địa điểm công tác:</label>
+            <input type="text" id="inpLocation" class="form-control" placeholder="Ví dụ: Trụ 23, Trạm Tân Bình 2...">
+        </div>
 
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'worker-check';
-            checkbox.id = `cn_${index}`;
-            checkbox.onchange = () => toggleWorkerRow(index);
+        <div class="form-group">
+            <label>Nội dung chi tiết (Mục 1 - Thông tin công trình):</label>
+            <textarea id="inpContent" class="form-control" rows="3" placeholder="Chi tiết nội dung công tác..."></textarea>
+        </div>
 
-            const infoDiv = document.createElement('div');
-            infoDiv.className = 'worker-info';
-            infoDiv.innerHTML = `<span class="worker-name">${cn.name} <span class="worker-grade">Bậc: ${cn.bat}</span></span>`;
+        <div class="form-group">
+            <label>Phân công nhân sự (Chọn và gán chức danh):</label>
+            <div class="worker-list" id="workerList">
+                </div>
+        </div>
 
-            const roleDiv = document.createElement('div');
-            roleDiv.className = 'worker-role-select';
-            const select = document.createElement('select');
-            select.id = `role_${index}`;
-            select.disabled = true;
-            CHUC_DANH.forEach(role => select.add(new Option(role, role)));
+        <div class="form-group">
+            <label>Người lập (Thiết lập):</label>
+            <input type="text" id="inpCreator" class="form-control" value="Nguyễn Ngọc Thành Trường">
+        </div>
 
-            roleDiv.appendChild(select);
-            row.appendChild(checkbox);
-            row.appendChild(infoDiv);
-            row.appendChild(roleDiv);
-            container.appendChild(row);
-        });
-    }
+        <div class="form-group">
+            <label>Người duyệt (Đội phó/Đội trưởng):</label>
+            <input type="text" id="inpApprover" class="form-control" value="Trần Công Đẹp">
+        </div>
 
-    window.toggleWorkerRow = function(index) {
-        const checkbox = document.getElementById(`cn_${index}`);
-        const select = document.getElementById(`role_${index}`);
-        const row = document.getElementById(`row_${index}`);
-        if (checkbox.checked) {
-            select.disabled = false;
-            row.classList.add('active');
-        } else {
-            select.disabled = true;
-            select.value = CHUC_DANH[0];
-            row.classList.remove('active');
-        }
-    }
+        <button class="btn-action" onclick="generateAndPrint()">XEM & IN PHƯƠNG ÁN</button>
+    </div>
 
-    function getDataAndValidate() {
-        const donVi = document.getElementById('donVi').value;
-        const ngayKhaoSat = document.getElementById('ngayKhaoSat').value;
-        const tenCongViec = document.getElementById('tenCongViec').value;
-        const diaDiem = document.getElementById('diaDiem').value;
-        const laiXeGau = document.getElementById('laiXeGau').value;
-        const laiXeCau = document.getElementById('laiXeCau').value;
-        const noiDung = document.getElementById('noiDung').value;
-        const ghiChu = document.getElementById('ghiChu').value;
-        const nguoiLap = document.getElementById('nguoiLap').value;
+    <div id="print-document">
+        
+        <table class="header-table">
+            <tr>
+                <td style="width: 45%;">
+                    CÔNG TY LƯỚI ĐIỆN CAO THẾ<br>
+                    <span class="unit-name">ĐỘI QUẢN LÝ LƯỚI ĐIỆN 2</span><br>
+                    Số: ......./PA-DQL2
+                </td>
+                <td style="width: 55%;">
+                    <span class="motto">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</span><br>
+                    <span class="sub-motto">Độc lập - Tự do - Hạnh phúc</span><br>
+                    <div class="date-line" id="printDateLine">TP.HCM, ngày ... tháng ... năm 2026</div>
+                </td>
+            </tr>
+        </table>
 
-        const toDuongDay = [];
-        let countCHTT = 0;
-        let countNCP = 0;
+        <div class="doc-title">PHƯƠNG ÁN THI CÔNG VÀ BIỆN PHÁP AN TOÀN</div>
+        <div class="doc-subtitle content-editable" id="printJobTitle">...</div>
 
-        DS_CONG_NHAN.forEach((cn, index) => {
-            if (document.getElementById(`cn_${index}`).checked) {
-                const role = document.getElementById(`role_${index}`).value;
-                if (role.includes("CHTT")) countCHTT++;
-                if (role.includes("NCP")) countNCP++;
-                toDuongDay.push({ ten: cn.name, bacAnToan: cn.bat, chucDanh: role });
-            }
-        });
+        <div class="section-header">I. CƠ SỞ THIẾT LẬP:</div>
+        <div class="list-item">- Căn cứ Quy trình An toàn điện số 959/QĐ-EVN ngày 26/07/2021 của Tổng Giám đốc Tập đoàn Điện lực Việt Nam;</div>
+        <div class="list-item">- Căn cứ quyết định 881/QĐ-EVN ngày 15/07/2021 V/v ban hành Quy trình an toàn thủy, cơ, nhiệt, hóa trong Tập đoàn Điện lực Quốc gia Việt Nam;</div>
+        <div class="list-item">- Căn cứ Quy trình quản lý vận hành và Sửa chữa đường dây trên không 110kV (theo QĐ số 4086/QĐ-EVNHCMC ngày 31/12/2015);</div>
+        <div class="list-item">- Căn cứ Hướng dẫn lập Phương án Thi công và Biện pháp An toàn (theo QĐ số 127/QĐ-LĐCT ngày 18/01/2024);</div>
+        <div class="list-item">- Căn cứ Hướng dẫn thực hiện công tác chặt tỉa, khai quang cây xanh (HD số 460/HD-LĐCT ngày 8/3/2019);</div>
+        <div class="list-item">- Căn cứ biên bản khảo sát hiện trường ngày <span id="printSurveyDate">...</span>.</div>
+        <div class="content-para">
+            -> Tổ đường dây 1 lập phương án thi công và biện pháp an toàn thực hiện công tác <span id="printJobNameShort" style="font-weight: bold;">...</span> như sau:
+        </div>
 
-        if (!tenCongViec) { alert("Vui lòng nhập tên công việc!"); return null; }
-        if (toDuongDay.length > 0) {
-            if (countCHTT !== 1) { alert(`Lỗi: Phải có duy nhất 1 CHTT.`); return null; }
-            if (countNCP !== 1) { alert(`Lỗi: Phải có duy nhất 1 NCP kiêm GSATĐ.`); return null; }
-        }
+        <div class="section-sub">1. Các thông tin về công trình:</div>
+        <div class="list-item"><b>- Nội dung công tác:</b> <span id="printContentDetail" class="editable" contenteditable="true">...</span></div>
+        <div class="list-item"><b>- Địa điểm công tác:</b> <span id="printLocation" class="editable" contenteditable="true">...</span></div>
+        <div class="list-item"><b>- Đơn vị thi công:</b> Tổ đường dây.</div>
 
-        return {
-            ngayTao: new Date().toISOString(),
-            donVi, ngayKhaoSat, tenCongViec, diaDiem,
-            nhanSu: { laiXeGau, laiXeCau, toDuongDay },
-            noiDung, ghiChu, nguoiLap
+        <div class="section-sub">2. Thời gian và Phạm vi cắt điện:</div>
+        <div class="list-item">- Thời gian: Từ 08h00 đến 16h00 (Dự kiến).</div>
+        <div class="list-item">- Phạm vi cắt điện: <span class="editable" contenteditable="true">Cô lập đường dây 110kV Phú Lâm (171) - Pouyen (171) - Tân Bình 2 (172).</span></div>
+
+        <div class="section-sub">3. Khối lượng công tác thực hiện:</div>
+        <div class="list-item editable" contenteditable="true">- Tại trụ 23: Phối hợp thí nghiệm chống sét van.</div>
+        <div class="list-item editable" contenteditable="true">- Trong trạm Tân Bình 2: Thử nghiệm hộp LineBox ngăn 172.</div>
+        <div class="list-item editable" contenteditable="true">- Chặt cây khai quang khoảng trụ 02-07, 33-34.</div>
+
+        <div class="section-sub">4. Biện pháp thi công:</div>
+        <div class="list-item editable" contenteditable="true">- Thực hiện tháo hộp LineBox và tiếp địa để thí nghiệm điện lực thực hiện việc thí nghiệm.</div>
+        <div class="list-item editable" contenteditable="true">- Dùng xe gàu nâng người, dụng cụ đồ nghề, đeo ủng găng tay cách điện, dùng sào thử điện cao áp thử hết điện, phối hợp thực hiện.</div>
+
+        <div class="section-sub">5. Khối lượng vật tư, dụng cụ:</div>
+        <div style="font-style: italic;">5.1. Vật tư:</div>
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">STT</th>
+                    <th>Tên vật tư</th>
+                    <th style="width: 15%;">Đơn vị</th>
+                    <th style="width: 15%;">Số lượng</th>
+                    <th>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody class="editable" contenteditable="true">
+                <tr><td class="text-center">1</td><td>Găng tay vải</td><td class="text-center">Đôi</td><td class="text-center">06</td><td></td></tr>
+                <tr><td class="text-center">2</td><td>Sứ thủy tinh 70kN</td><td class="text-center">Bát</td><td class="text-center">0</td><td>Dự phòng</td></tr>
+            </tbody>
+        </table>
+
+        <div style="font-style: italic;">5.2. Dụng cụ thi công:</div>
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">STT</th>
+                    <th>Tên dụng cụ</th>
+                    <th style="width: 15%;">Đơn vị</th>
+                    <th style="width: 15%;">Số lượng</th>
+                </tr>
+            </thead>
+            <tbody class="editable" contenteditable="true">
+                <tr><td class="text-center">1</td><td>Bộ đồ nghề thi công</td><td class="text-center">Bộ</td><td class="text-center">01</td></tr>
+                <tr><td class="text-center">2</td><td>Dây luộc, Puly</td><td class="text-center">Bộ</td><td class="text-center">01</td></tr>
+            </tbody>
+        </table>
+
+        <div style="font-style: italic;">5.3. Trang cụ an toàn:</div>
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">STT</th>
+                    <th>Tên trang cụ</th>
+                    <th style="width: 15%;">Đơn vị</th>
+                    <th style="width: 15%;">Số lượng</th>
+                </tr>
+            </thead>
+            <tbody class="editable" contenteditable="true">
+                <tr><td class="text-center">1</td><td>Sào thử điện 110kV</td><td class="text-center">Cây</td><td class="text-center">01</td></tr>
+                <tr><td class="text-center">2</td><td>Tiếp địa lưu động cao thế</td><td class="text-center">Bộ</td><td class="text-center">01</td></tr>
+                <tr><td class="text-center">3</td><td>Găng/Ủng cách điện</td><td class="text-center">Bộ</td><td class="text-center">01</td></tr>
+                <tr><td class="text-center">4</td><td>Túi cứu thương</td><td class="text-center">Cái</td><td class="text-center">01</td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-sub">6. Biện pháp an toàn:</div>
+        <div class="list-item">- Thử không còn điện tại vị trí công tác.</div>
+        <div class="list-item">- Kiểm tra chất lượng, thời hạn thử nghiệm các dụng cụ an toàn trước khi làm việc.</div>
+        <div class="list-item">- CHTT phổ biến nhiệm vụ, phạm vi an toàn và giám sát liên tục.</div>
+        <div class="list-item">- Công nhân phải sử dụng đầy đủ phương tiện bảo vệ cá nhân (dây an toàn 2 móc, nón bảo hộ...).</div>
+        <div class="list-item editable" contenteditable="true" style="color: red;">* Lưu ý: Giữ khoảng cách an toàn với đường dây 110kV đang vận hành gần kề (nếu có).</div>
+
+        <div class="section-sub">7. Phân công nhiệm vụ tại công trường:</div>
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">STT</th>
+                    <th style="width: 40%;">Họ và tên</th>
+                    <th style="width: 15%;">Bậc AT</th>
+                    <th>Phân công nhiệm vụ</th>
+                </tr>
+            </thead>
+            <tbody id="printWorkerTable">
+                </tbody>
+        </table>
+
+        <table class="sign-table">
+            <tr>
+                <td>
+                    <div class="sign-title">DUYỆT<br>ĐỘI PHÓ</div>
+                    <br><br><br>
+                    <div style="font-weight: bold;" id="printApprover">Trần Công Đẹp</div>
+                </td>
+                <td>
+                    <div class="sign-title">THIẾT LẬP</div>
+                    <br><br><br>
+                    <div style="font-weight: bold;" id="printCreator">...</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        // --- Dữ liệu Nhân viên (Thầy có thể sửa ở đây) ---
+        const EMPLOYEES = [
+            { name: "Nguyễn Ngọc Thành Trường", level: "5/5" },
+            { name: "Bùi Dương Đông", level: "5/5" },
+            { name: "Phùng Quang Trường", level: "5/5" },
+            { name: "Trần Quốc Đạt", level: "2/5" },
+            { name: "Nguyễn Thanh Khoa", level: "4/5" },
+            { name: "Nguyễn Minh Hải", level: "4/5" },
+            { name: "Tài xế xe gàu", level: "-" },
+            { name: "Tài xế xe cẩu", level: "-" }
+        ];
+
+        const ROLES = [
+            "Công nhân thực hiện",
+            "CHTT",
+            "Người cho phép, Giám sát ATĐ",
+            "Cảnh giới giao thông",
+            "Lái xe phục vụ"
+        ];
+
+        // Khởi tạo ứng dụng
+        window.onload = function() {
+            // Set ngày mặc định
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('inpDate').value = today;
+
+            // Render danh sách công nhân để chọn
+            const workerListDiv = document.getElementById('workerList');
+            EMPLOYEES.forEach((emp, index) => {
+                const div = document.createElement('div');
+                div.className = 'worker-item';
+                
+                div.innerHTML = `
+                    <input type="checkbox" id="chk_${index}" style="transform: scale(1.2);">
+                    <div style="margin-left: 10px; flex: 1;">
+                        <span class="worker-name">${emp.name}</span>
+                        <span style="font-size: 0.8em; color: #666;">(Bậc: ${emp.level})</span>
+                    </div>
+                    <select id="role_${index}" class="worker-role">
+                        ${ROLES.map(r => `<option value="${r}">${r}</option>`).join('')}
+                    </select>
+                `;
+                workerListDiv.appendChild(div);
+            });
         };
-    }
 
-    window.luuDuLieu = function() {
-        const data = getDataAndValidate();
-        if (!data) return;
-        const btn = document.querySelector('.btn-save');
-        btn.textContent = "Đang lưu...";
-        push(ref(database, 'phuong_an_thi_cong'), data)
-            .then(() => alert("Lưu thành công!"))
-            .catch(err => alert("Lỗi: " + err.message))
-            .finally(() => btn.textContent = "LƯU DỮ LIỆU");
-    }
+        // Hàm Xử lý In
+        function generateAndPrint() {
+            // 1. Lấy dữ liệu từ Form
+            const dateVal = document.getElementById('inpDate').value;
+            const jobName = document.getElementById('inpJobName').value;
+            const location = document.getElementById('inpLocation').value;
+            const content = document.getElementById('inpContent').value;
+            const creator = document.getElementById('inpCreator').value;
+            const approver = document.getElementById('inpApprover').value;
 
-    window.xemVaIn = function() {
-        const data = getDataAndValidate();
-        if (!data) return;
+            if(!dateVal || !jobName) {
+                alert("Vui lòng nhập Ngày và Tên công việc!");
+                return;
+            }
 
-        document.getElementById('p_donVi').textContent = data.donVi.toUpperCase();
-        document.getElementById('p_tenCongViec').textContent = data.tenCongViec;
-        document.getElementById('p_diaDiem').textContent = data.diaDiem;
-        const d = new Date(data.ngayKhaoSat);
-        document.getElementById('p_ngay').textContent = `Ngày ${d.getDate()} tháng ${d.getMonth() + 1} năm ${d.getFullYear()}`;
-        document.getElementById('p_noiDung').textContent = data.noiDung;
-        document.getElementById('p_ghiChu').textContent = data.ghiChu;
-        document.getElementById('p_nguoiLap').textContent = data.nguoiLap || "(Chưa ký)";
+            // 2. Điền vào mẫu In
+            // Ngày tháng
+            const d = new Date(dateVal);
+            document.getElementById('printDateLine').textContent = `TP.HCM, ngày ${d.getDate()} tháng ${d.getMonth() + 1} năm ${d.getFullYear()}`;
+            document.getElementById('printSurveyDate').textContent = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+            
+            // Thông tin công việc
+            document.getElementById('printJobTitle').textContent = "Về việc: " + jobName;
+            document.getElementById('printJobNameShort').textContent = jobName;
+            document.getElementById('printLocation').textContent = location;
+            document.getElementById('printContentDetail').textContent = content;
 
-        const tbody = document.getElementById('p_tableBody');
-        tbody.innerHTML = '';
-        let stt = 1;
+            // Chữ ký
+            document.getElementById('printCreator').textContent = creator;
+            document.getElementById('printApprover').textContent = approver;
 
-        if (data.nhanSu.laiXeGau) tbody.innerHTML += `<tr><td class='center-text'>${stt++}</td><td>${data.nhanSu.laiXeGau}</td><td class='center-text'>-</td><td>Lái xe gàu</td></tr>`;
-        if (data.nhanSu.laiXeCau) tbody.innerHTML += `<tr><td class='center-text'>${stt++}</td><td>${data.nhanSu.laiXeCau}</td><td class='center-text'>-</td><td>Lái xe cẩu</td></tr>`;
+            // Bảng nhân sự
+            const tableBody = document.getElementById('printWorkerTable');
+            tableBody.innerHTML = "";
+            let stt = 1;
 
-        data.nhanSu.toDuongDay.forEach(cn => {
-            let bold = (cn.chucDanh.includes("CHTT") || cn.chucDanh.includes("NCP")) ? "font-weight:bold;" : "";
-            tbody.innerHTML += `<tr><td class='center-text'>${stt++}</td><td style='${bold}'>${cn.ten}</td><td class='center-text'>${cn.bacAnToan}</td><td style='${bold}'>${cn.chucDanh}</td></tr>`;
-        });
+            EMPLOYEES.forEach((emp, index) => {
+                const checkbox = document.getElementById(`chk_${index}`);
+                if(checkbox.checked) {
+                    const role = document.getElementById(`role_${index}`).value;
+                    let rowHtml = `
+                        <tr>
+                            <td class="text-center">${stt++}</td>
+                            <td class="text-bold">${emp.name}</td>
+                            <td class="text-center">${emp.level}</td>
+                            <td class="text-bold">${role}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += rowHtml;
+                }
+            });
 
-        document.getElementById('inputForm').style.display = 'none';
-        document.getElementById('printArea').style.display = 'block';
-    }
-
-    window.quayLai = function() {
-        document.getElementById('printArea').style.display = 'none';
-        document.getElementById('inputForm').style.display = 'block';
-    }
-
-    initApp();
-</script>
+            // 3. Gọi lệnh in
+            window.print();
+        }
+    </script>
 </body>
 </html>
